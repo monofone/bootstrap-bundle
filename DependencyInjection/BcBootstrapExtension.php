@@ -176,11 +176,15 @@ class BcBootstrapExtension extends Extension implements PrependExtensionInterfac
 
     private function buildAsseticBootstrapCssConfig(array $config)
     {
+        $assetFiles = array();
+
+        if(!$config['use_own_bootstrap']) {
+            $assetFiles[] = $config['assets_dir'].'/less/bootstrap.less';
+        }
+        $assetFiles[] = $config['assets_dir'].'/less/responsive.less';
+
         return array(
-            'inputs'        => array(
-                $config['assets_dir'].'/less/bootstrap.less',
-                $config['assets_dir'].'/less/responsive.less'
-            ),
+            'inputs'        => $assetFiles,
             'filters'       => array($config['less_filter'], 'cssrewrite'),
             'output'        => $config['output_dir'].'/css/bootstrap.css'
         );
